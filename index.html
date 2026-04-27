@@ -62,14 +62,105 @@
         div.bg-\[\#0d0d0f\]>div.border-b {
             padding: 16px 24px !important;
         }
+
+        /* 5. Reveal 3D background without breaking text color */
+        html,
+        body {
+            /* Removing background here so it doesn't hide the canvas */
+            color: #ffffff;
+        }
+
+        #root,
+        #root>div,
+        #root>div>div.min-h-screen {
+            background-color: transparent !important;
+        }
+
+        /* Keep project cards solid */
+        div.bg-\[\#0d0d0f\].border-\[\#1a1a1e\].rounded-3xl {
+            background-color: #0d0d0f !important;
+        }
+
+        /* 6. Improve Loading Animation */
+        div.bg-\[\#08080a\].z-\[100\] {
+            background-color: rgba(5, 5, 5, 0.3) !important;
+            /* See 3D canvas during load */
+            transition: opacity 1s ease-in-out !important;
+            /* Smooth transition */
+        }
+
+        #extreme-counter {
+            font-size: 8vw;
+            font-weight: 900;
+            color: transparent;
+            -webkit-text-stroke: 1px #e8b27a;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.05em;
+            line-height: 1;
+        }
+
+        /* Fix the abrupt fade out by forcing opacity to 0 when exiting */
+        div.bg-\[\#08080a\].z-\[100\].pointer-events-none {
+            opacity: 0 !important;
+        }
+
+        /* 7. Three.js Canvas Background */
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            /* Let clicks pass through to the portfolio */
+            background-color: #050505;
+            /* Canvas acts as the global dark background */
+        }
     </style>
 </head>
 
 <body>
+    <!-- Custom Extreme Loader -->
+    <div id="extreme-loader">
+        <div id="extreme-counter">0</div>
+    </div>
+    <script>
+        const counter = document.getElementById('extreme-counter');
+        const loader = document.getElementById('extreme-loader');
+        const duration = 2500; // slightly longer for the majestic particle assembly
+        const startTime = performance.now();
+
+        function updateLoader(currentTime) {
+            const elapsed = currentTime - startTime;
+            const t = Math.min(elapsed / duration, 1);
+            
+            // easeInOutCubic for a smooth, organic flow
+            const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            
+            counter.innerText = Math.floor(ease * 100);
+            
+            // Dispatch sync event for Three.js
+            window.dispatchEvent(new CustomEvent('loaderProgress', { detail: { progress: ease } }));
+
+            if (t < 1) {
+                requestAnimationFrame(updateLoader);
+            } else {
+                setTimeout(() => {
+                    loader.classList.add('exit');
+                    window.dispatchEvent(new Event('extremeTransition'));
+                }, 100);
+            }
+        }
+        requestAnimationFrame(updateLoader);
+    </script>
+    <canvas id="three-canvas"></canvas>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script defer src="/static/js/bundle.js"></script>
-
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="/three-bg.js"></script>
 
     <script>
         !(function (t, e) {
