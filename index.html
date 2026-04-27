@@ -27,16 +27,27 @@
 
         /* Project Area Polish */
 
-        /* 1. Add depth and interaction to main project cards */
+        /* 1. Add depth and interaction to main project cards (now text-focused) */
         div.bg-\[\#0d0d0f\].border-\[\#1a1a1e\].rounded-3xl {
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+            background: linear-gradient(145deg, #111116 0%, #0a0a0c 100%) !important;
+            padding: 3rem !important;
+            border-color: #222228 !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Hide the massive video/image block to make it cleaner */
+        .aspect-video {
+            display: none !important;
         }
 
         div.bg-\[\#0d0d0f\].border-\[\#1a1a1e\].rounded-3xl:hover {
             transform: translateY(-8px) scale(1.01) !important;
             box-shadow: 0 20px 40px rgba(232, 178, 122, 0.12) !important;
-            border-color: rgba(232, 178, 122, 0.3) !important;
+            border-color: rgba(232, 178, 122, 0.4) !important;
         }
 
         /* 2. Improve typography & readability for project descriptions */
@@ -76,32 +87,26 @@
             background-color: transparent !important;
         }
 
+        /* Initial cinematic hide */
+        #root {
+            opacity: 0;
+            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        #root.reveal {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
         /* Keep project cards solid */
         div.bg-\[\#0d0d0f\].border-\[\#1a1a1e\].rounded-3xl {
             background-color: #0d0d0f !important;
         }
 
-        /* 6. Improve Loading Animation */
+        /* 6. Hide default React loader to use Three.js dust as loader */
         div.bg-\[\#08080a\].z-\[100\] {
-            background-color: rgba(5, 5, 5, 0.3) !important;
-            /* See 3D canvas during load */
-            transition: opacity 1s ease-in-out !important;
-            /* Smooth transition */
-        }
-
-        #extreme-counter {
-            font-size: 8vw;
-            font-weight: 900;
-            color: transparent;
-            -webkit-text-stroke: 1px #e8b27a;
-            font-family: 'Inter', sans-serif;
-            letter-spacing: 0.05em;
-            line-height: 1;
-        }
-
-        /* Fix the abrupt fade out by forcing opacity to 0 when exiting */
-        div.bg-\[\#08080a\].z-\[100\].pointer-events-none {
-            opacity: 0 !important;
+            display: none !important;
         }
 
         /* 7. Three.js Canvas Background */
@@ -117,43 +122,25 @@
             background-color: #050505;
             /* Canvas acts as the global dark background */
         }
+
+        /* 8. Hide the custom React circle/dot cursor and restore system cursor */
+        .cursor-dot,
+        .cursor-ring {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+
+        body,
+        a,
+        button,
+        [role="button"] {
+            cursor: auto !important;
+        }
     </style>
 </head>
 
 <body>
-    <!-- Custom Extreme Loader -->
-    <div id="extreme-loader">
-        <div id="extreme-counter">0</div>
-    </div>
-    <script>
-        const counter = document.getElementById('extreme-counter');
-        const loader = document.getElementById('extreme-loader');
-        const duration = 2500; // slightly longer for the majestic particle assembly
-        const startTime = performance.now();
-
-        function updateLoader(currentTime) {
-            const elapsed = currentTime - startTime;
-            const t = Math.min(elapsed / duration, 1);
-            
-            // easeInOutCubic for a smooth, organic flow
-            const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-            
-            counter.innerText = Math.floor(ease * 100);
-            
-            // Dispatch sync event for Three.js
-            window.dispatchEvent(new CustomEvent('loaderProgress', { detail: { progress: ease } }));
-
-            if (t < 1) {
-                requestAnimationFrame(updateLoader);
-            } else {
-                setTimeout(() => {
-                    loader.classList.add('exit');
-                    window.dispatchEvent(new Event('extremeTransition'));
-                }, 100);
-            }
-        }
-        requestAnimationFrame(updateLoader);
-    </script>
     <canvas id="three-canvas"></canvas>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
