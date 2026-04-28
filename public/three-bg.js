@@ -21,44 +21,85 @@ const initThreeJS = () => {
     let isExploded = false;
 
     // --- THE NAME SHATTER GENERATOR ---
-    // 1. We use an invisible HTML canvas to render your name "AZAD" in bold font
-    // 2. We scan the pixels of that canvas to get the exact coordinates of the letters
-    // 3. We map 25,000 3D particles to those coordinates to build your name out of golden dust
-
-    const textCanvas = document.createElement('canvas');
-    textCanvas.width = 1200;
-    textCanvas.height = 300;
-    const ctx = textCanvas.getContext('2d');
-
-    // Draw the text (Bold, premium typography)
-    ctx.fillStyle = 'white';
-    ctx.font = '900 240px "Inter", "Arial Black", Impact, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('A Z A D', textCanvas.width / 2, textCanvas.height / 2);
-
-    const imgData = ctx.getImageData(0, 0, textCanvas.width, textCanvas.height).data;
-    const validPoints = [];
-
-    // Extract pixel coordinates where the text exists
-    for (let y = 0; y < textCanvas.height; y += 2) { // Skip pixels for performance
-        for (let x = 0; x < textCanvas.width; x += 2) {
-            const index = (y * textCanvas.width + x) * 4;
-            const alpha = imgData[index + 3];
-            if (alpha > 128) {
-                // Map from 2D canvas coordinates to 3D space
-                const mappedX = (x - textCanvas.width / 2) * 0.03;
-                const mappedY = -(y - textCanvas.height / 2) * 0.03;
-                validPoints.push({ x: mappedX, y: mappedY });
+    const getPointsForText = (renderCallback) => {
+        const textCanvas = document.createElement('canvas');
+        textCanvas.width = 3000;
+        textCanvas.height = 1200;
+        const ctx = textCanvas.getContext('2d');
+        
+        renderCallback(ctx, textCanvas.width, textCanvas.height);
+        
+        const imgData = ctx.getImageData(0, 0, textCanvas.width, textCanvas.height).data;
+        const validPoints = [];
+        for (let y = 0; y < textCanvas.height; y += 2) {
+            for (let x = 0; x < textCanvas.width; x += 2) {
+                const index = (y * textCanvas.width + x) * 4;
+                if (imgData[index + 3] > 128) {
+                    validPoints.push({
+                        x: (x - textCanvas.width / 2) * 0.03,
+                        y: -(y - textCanvas.height / 2) * 0.03
+                    });
+                }
             }
         }
-    }
+        for (let i = validPoints.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [validPoints[i], validPoints[j]] = [validPoints[j], validPoints[i]];
+        }
+        if (validPoints.length === 0) validPoints.push({ x: 0, y: 0 });
+        return validPoints;
+    };
 
-    const particleCount = 25000;
+    const loadingPoints = getPointsForText((ctx, width, height) => {
+        ctx.fillStyle = 'white';
+        ctx.font = '900 120px "Inter", "Arial Black", Impact, sans-serif';
+        ctx.letterSpacing = '10px';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        // Draw the text (shifted slightly left to make room for dots)
+        ctx.fillText('LOADING', width / 2 - 100, height / 2);
+        
+        // Draw the dots separately so we can identify them by X coordinate later
+        ctx.fillText('.', width / 2 + 300, height / 2);
+        ctx.fillText('.', width / 2 + 380, height / 2);
+        ctx.fillText('.', width / 2 + 460, height / 2);
+    });
+
+    const namePoints = getPointsForText((ctx, width, height) => {
+        ctx.fillStyle = 'white';
+        ctx.font = '900 160px "Inter", "Arial Black", Impact, sans-serif';
+        ctx.letterSpacing = '15px';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('AZAD', width / 2, height / 2 - 80);
+        ctx.fillText('ABOOBACKAR', width / 2, height / 2 + 80);
+
+        ctx.font = '900 100px "Inter", "Arial Black", Impact, sans-serif';
+        ctx.letterSpacing = '5px';
+        const drawScatteredText = (text, x, y, angle) => {
+            ctx.save(); ctx.translate(x, y); ctx.rotate(angle * Math.PI / 180); ctx.fillText(text, 0, 0); ctx.restore();
+        };
+        // Chaotic abstract symbol scatter (less formal, more hacker/cyberpunk)
+        drawScatteredText('Python', 200, 250, -35);
+        drawScatteredText('{  }', 900, 150, 18);
+        drawScatteredText('[ ... ]', 2300, 200, -22);
+        drawScatteredText('Django', 2800, 300, 40);
+        drawScatteredText('**kwargs', 350, 600, 25);
+        drawScatteredText('=>', 2750, 650, -45);
+        drawScatteredText('(  )', 250, 1050, -15);
+        drawScatteredText('0x1F', 850, 950, 30);
+        drawScatteredText('def()', 1450, 1150, -25);
+        drawScatteredText('</>', 2100, 1050, 12);
+        drawScatteredText('~ /', 2700, 1000, -30);
+    });
+
+    const particleCount = 100000;
     const positionsArray = [];
 
-    // If the canvas failed or is empty, fallback to a small scatter
-    if (validPoints.length === 0) validPoints.push({ x: 0, y: 0 });
+    // Safety checks
+    if (loadingPoints.length === 0) loadingPoints.push({ x: 0, y: 0 });
+    if (namePoints.length === 0) namePoints.push({ x: 0, y: 0 });
 
     for (let i = 0; i < particleCount; i++) {
         // 1. Initial State: Chaotic dust floating everywhere
@@ -69,13 +110,26 @@ const initThreeJS = () => {
         const startY = startRadius * Math.sin(sPhi) * Math.sin(sTheta);
         const startZ = (Math.random() - 0.5) * 150.0;
 
-        // 2. The Name State: Map to a random pixel inside the letters
-        const pt = validPoints[Math.floor(Math.random() * validPoints.length)];
+        // 2. The Loading State: Map to a pixel inside "LOADING..."
+        const ptLoad = loadingPoints[i % loadingPoints.length];
+        
+        const loadingX = ptLoad.x + (Math.random() - 0.5) * 0.08;
+        const loadingY = ptLoad.y + (Math.random() - 0.5) * 0.08;
+        const loadingZ = (Math.random() - 0.5) * 0.5;
+        
+        // Identify dots based on their X position
+        let dotIndex = -1;
+        if (ptLoad.x > 8.5 && ptLoad.x < 10.5) dotIndex = 0;
+        else if (ptLoad.x >= 10.5 && ptLoad.x < 12.5) dotIndex = 1;
+        else if (ptLoad.x >= 12.5) dotIndex = 2;
 
-        // Add random 3D thickness (scatter) so the text isn't paper-thin, giving it a solid 3D feel
-        const nameX = pt.x + (Math.random() - 0.5) * 0.3;
-        const nameY = pt.y + (Math.random() - 0.5) * 0.3;
-        const nameZ = (Math.random() - 0.5) * 1.5;
+        // 3. The Name State: Map to a pixel inside "AZAD ABOOBACKAR"
+        const ptName = namePoints[i % namePoints.length];
+
+        // Add random 3D thickness (scatter) so the text isn't paper-thin
+        const nameX = ptName.x + (Math.random() - 0.5) * 0.08;
+        const nameY = ptName.y + (Math.random() - 0.5) * 0.08;
+        const nameZ = (Math.random() - 0.5) * 0.5;
 
         // 3. The Final Explosion Scatter (Interactive dust field)
         const finalRadius = 5 + Math.random() * 80;
@@ -87,6 +141,7 @@ const initThreeJS = () => {
 
         vertexData.push({
             startX, startY, startZ,
+            loadingX, loadingY, loadingZ, dotIndex,
             nameX, nameY, nameZ,
             finalX, finalY, finalZ,
             currentX: startX, currentY: startY, currentZ: startZ
@@ -148,22 +203,28 @@ const initThreeJS = () => {
         raycaster.setFromCamera(mouse, camera);
         raycaster.ray.intersectPlane(plane, mouseWorldPos);
 
-        let formProgress = 0;
+        let formLoadingProgress = 0;
+        let morphProgress = 0;
         let explodeProgress = 0;
 
         if (elapsedTime < 1.5) {
-            // Forming the Name
+            // Phase 1: Meteor shower into LOADING
             const t = elapsedTime / 1.5;
-            // easeOutExpo gives a very snappy snap-into-place feel
-            formProgress = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+            formLoadingProgress = t === 1 ? 1 : 1 - Math.pow(2, -10 * t); // easeOutExpo
         } else {
-            formProgress = 1;
+            formLoadingProgress = 1;
         }
 
-        if (elapsedTime > 2.5) {
-            // Shattering the Name
-            const t = Math.min((elapsedTime - 2.5) / 1.5, 1);
-            explodeProgress = t === 1 ? 1 : 1 - Math.pow(2, -10 * t); // easeOutExpo
+        if (elapsedTime > 3.0) {
+            // Phase 2: Morph from LOADING to AZAD ABOOBACKAR
+            const t = Math.min((elapsedTime - 3.0) / 1.5, 1);
+            morphProgress = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+        }
+
+        if (elapsedTime > 5.0) {
+            // Phase 3: Shattering the Name
+            const t = Math.min((elapsedTime - 5.0) / 1.5, 1);
+            explodeProgress = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
 
             if (!isExploded) {
                 isExploded = true;
@@ -171,7 +232,8 @@ const initThreeJS = () => {
             }
         }
 
-        if (elapsedTime > 4.0 && !hasRevealed) {
+        // Trigger UI reveal matching the new explosion time
+        if (elapsedTime > 5.3 && !hasRevealed) {
             hasRevealed = true;
             const rootEl = document.getElementById('root');
             if (rootEl) {
@@ -198,10 +260,27 @@ const initThreeJS = () => {
             let targetX, targetY, targetZ;
 
             if (!isExploded) {
-                // Moving into the text shape
-                targetX = v.startX + (v.nameX - v.startX) * formProgress;
-                targetY = v.startY + (v.nameY - v.startY) * formProgress;
-                targetZ = v.startZ + (v.nameZ - v.startZ) * formProgress;
+                // Determine target text state (Loading -> Name morph)
+                let currentTextX = v.loadingX;
+                let currentTextY = v.loadingY;
+                let currentTextZ = v.loadingZ;
+                
+                // Bouncing dot logic during the loading phase
+                if (v.dotIndex !== -1 && morphProgress === 0) {
+                    const bouncePhase = elapsedTime * 8 - v.dotIndex * 1.5;
+                    currentTextY += Math.max(0, Math.sin(bouncePhase)) * 1.0;
+                }
+
+                if (morphProgress > 0) {
+                    currentTextX += (v.nameX - currentTextX) * morphProgress;
+                    currentTextY += (v.nameY - currentTextY) * morphProgress;
+                    currentTextZ += (v.nameZ - currentTextZ) * morphProgress;
+                }
+
+                // Apply initial entry fall
+                targetX = v.startX + (currentTextX - v.startX) * formLoadingProgress;
+                targetY = v.startY + (currentTextY - v.startY) * formLoadingProgress;
+                targetZ = v.startZ + (currentTextZ - v.startZ) * formLoadingProgress;
             } else {
                 // Shattering outward
                 targetX = v.nameX + (v.finalX - v.nameX) * explodeProgress;
