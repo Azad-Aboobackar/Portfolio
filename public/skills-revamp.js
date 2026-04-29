@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // The skills data - Typescript removed!
+
     const orbitData = [
         {
             ring: 1,
