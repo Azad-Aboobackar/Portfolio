@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
             radius: 140,
             speed: 25,
             reverse: false,
-            items: ["JavaScript", "Python", "SQL", "C", "HTML5", "CSS3"]
+            items: ["JavaScript", "Python", "SQL", "HTML5", "CSS3"]
         },
         {
             ring: 2,
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let html = `
             <div class="quantum-header">
                 <div class="section-num mb-4" style="font-family: 'JetBrains Mono', monospace; color: rgba(232,178,122,0.8); font-size: 0.75rem; letter-spacing: 0.2em;">// 03 — STACK</div>
-                <h2>The tools I reach for when <span class="highlight">building</span>.</h2>
+                <h2>The tools I have <span class="highlight">mastered</span>.</h2>
             </div>
             <div class="quantum-container">
                 <div class="quantum-core">CORE</div>
