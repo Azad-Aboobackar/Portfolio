@@ -1,0 +1,187 @@
+/* Hide original skills */
+#skills { display: none !important; }
+
+/* Custom Skills Revamp */
+#custom-skills-revamp {
+    position: relative;
+    padding: 8rem 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.quantum-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    position: relative;
+    z-index: 20;
+}
+
+.quantum-header h2 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(0,0,0,0.8);
+}
+
+.quantum-header .highlight {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    color: #e8b27a;
+    text-shadow: 0 0 20px rgba(232, 178, 122, 0.2);
+}
+
+.quantum-container {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    height: 700px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1400px;
+    transform-style: preserve-3d;
+}
+
+/* Background Galaxy Glow */
+.quantum-container::after {
+    content: '';
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(232, 178, 122, 0.12) 0%, rgba(124, 92, 255, 0.06) 25%, transparent 55%);
+    border-radius: 50%;
+    z-index: -2;
+    pointer-events: none;
+    transform: translateZ(-200px);
+}
+
+/* The Core */
+.quantum-core {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle at 30% 30%, #fff 0%, #e8b27a 40%, #7c5cff 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 50px rgba(232, 178, 122, 0.8), 0 0 100px rgba(124, 92, 255, 0.4), inset 0 0 20px #fff;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    color: #08080a;
+    font-size: 1.1rem;
+    animation: core-pulse 4s ease-in-out infinite alternate;
+    transform: translateZ(30px);
+}
+
+@keyframes core-pulse {
+    0% { transform: translateZ(30px) scale(1); box-shadow: 0 0 40px rgba(232, 178, 122, 0.6), 0 0 80px rgba(124, 92, 255, 0.4), inset 0 0 20px #fff; }
+    100% { transform: translateZ(30px) scale(1.1); box-shadow: 0 0 60px rgba(232, 178, 122, 0.9), 0 0 120px rgba(124, 92, 255, 0.6), inset 0 0 30px #fff; }
+}
+
+/* Orbital System */
+.orbit-system {
+    position: relative;
+    width: 0;
+    height: 0;
+    transform: rotateX(65deg);
+    transform-style: preserve-3d;
+}
+
+.orbit-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top-color: rgba(232, 178, 122, 0.3);
+    border-bottom-color: rgba(124, 92, 255, 0.3);
+    transform-style: preserve-3d;
+    width: calc(var(--ring-radius) * 2px);
+    height: calc(var(--ring-radius) * 2px);
+    margin-left: calc(var(--ring-radius) * -1px);
+    margin-top: calc(var(--ring-radius) * -1px);
+    animation: orbit-spin var(--speed) linear infinite;
+    will-change: transform;
+}
+
+@keyframes orbit-spin {
+    from { transform: rotateZ(0deg); }
+    to { transform: rotateZ(360deg); }
+}
+
+/* Animations run continuously (pause removed based on user request) */
+
+/* The Satellite Node */
+.satellite {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: rotateZ(var(--angle)) translateX(calc(var(--ring-radius) * 1px)) rotateZ(calc(-1 * var(--angle)));
+    transform-style: preserve-3d;
+}
+
+/* Wrapper to handle the counter-spin animation independently of hover scaling */
+.satellite-wrapper {
+    position: absolute;
+    transform-style: preserve-3d;
+    animation: counter-spin var(--speed) linear infinite;
+    will-change: transform;
+}
+
+/* Inner rings counter-rotate */
+.orbit-ring.reverse {
+    animation-direction: reverse;
+}
+.orbit-ring.reverse .satellite-wrapper {
+    animation-direction: reverse;
+}
+
+@keyframes counter-spin {
+    from { transform: rotateZ(0deg) rotateX(-65deg); }
+    to { transform: rotateZ(-360deg) rotateX(-65deg); }
+}
+
+/* The Content inside the satellite that faces camera */
+.satellite-content {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex; justify-content: center; align-items: center;
+    padding: 10px 20px;
+    background: rgba(10, 10, 15, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: default;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.9), inset 0 0 10px rgba(232, 178, 122, 0.15);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+.satellite-content:hover {
+    background: linear-gradient(135deg, rgba(232, 178, 122, 0.2), rgba(232, 178, 122, 0.05));
+    border-color: rgba(232, 178, 122, 0.6);
+    color: #fff;
+    box-shadow: 0 0 25px rgba(232, 178, 122, 0.4), inset 0 0 10px rgba(232, 178, 122, 0.2);
+    transform: translate(-50%, -50%) scale(1.25) translateZ(10px);
+    z-index: 100;
+}
+
+/* Optional responsive adjustments */
+@media (max-width: 768px) {
+    .quantum-container {
+        transform: scale(0.6);
+        height: 400px;
+    }
+}

@@ -46974,10 +46974,7 @@ import(${JSON.stringify(manifest.entry.module)});`;
           desc: "PostgreSQL schemas tuned with Django ORM."
         }, {
           title: "Mobile-First UI",
-          desc: "React + Bootstrap UI that scales across devices."
-        }, {
-          title: "Clean Architecture",
-          desc: "SOLID principles, MVT pattern, maintainable codebase."
+          desc: "Responsive Bootstrap UI that scales across devices."
         }],
         stack: ["Python", "Django", "PostgreSQL", "JavaScript", "Razorpay", "Bootstrap", "HTML5", "CSS3"],
         metrics: [{
@@ -47053,7 +47050,7 @@ import(${JSON.stringify(manifest.entry.module)});`;
         label: "Contact",
         num: "06"
       }];
-      const heroWords = ["clean architectures", "resilient APIs", "interfaces with soul", "production systems"];
+      const heroWords = ["scalable backends", "resilient APIs", "interfaces with soul", "production systems"];
 
       const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
       const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(

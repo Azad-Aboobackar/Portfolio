@@ -26,9 +26,9 @@ const initThreeJS = () => {
         textCanvas.width = 3000;
         textCanvas.height = 1200;
         const ctx = textCanvas.getContext('2d');
-        
+
         renderCallback(ctx, textCanvas.width, textCanvas.height);
-        
+
         const imgData = ctx.getImageData(0, 0, textCanvas.width, textCanvas.height).data;
         const validPoints = [];
         for (let y = 0; y < textCanvas.height; y += 2) {
@@ -56,10 +56,10 @@ const initThreeJS = () => {
         ctx.letterSpacing = '10px';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        
+
         // Draw the text (shifted slightly left to make room for dots)
         ctx.fillText('LOADING', width / 2 - 100, height / 2);
-        
+
         // Draw the dots separately so we can identify them by X coordinate later
         ctx.fillText('.', width / 2 + 300, height / 2);
         ctx.fillText('.', width / 2 + 380, height / 2);
@@ -112,11 +112,11 @@ const initThreeJS = () => {
 
         // 2. The Loading State: Map to a pixel inside "LOADING..."
         const ptLoad = loadingPoints[i % loadingPoints.length];
-        
+
         const loadingX = ptLoad.x + (Math.random() - 0.5) * 0.08;
         const loadingY = ptLoad.y + (Math.random() - 0.5) * 0.08;
         const loadingZ = (Math.random() - 0.5) * 0.5;
-        
+
         // Identify dots based on their X position
         let dotIndex = -1;
         if (ptLoad.x > 8.5 && ptLoad.x < 10.5) dotIndex = 0;
@@ -264,7 +264,7 @@ const initThreeJS = () => {
                 let currentTextX = v.loadingX;
                 let currentTextY = v.loadingY;
                 let currentTextZ = v.loadingZ;
-                
+
                 // Bouncing dot logic during the loading phase
                 if (v.dotIndex !== -1 && morphProgress === 0) {
                     const bouncePhase = elapsedTime * 8 - v.dotIndex * 1.5;

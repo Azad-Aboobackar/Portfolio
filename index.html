@@ -28,50 +28,173 @@
 
         /* Project Area Polish */
 
-        /* 1. Add depth and interaction to main project cards (now text-focused) */
-        div.bg-\[\#0d0d0f\].border-\[\#1a1a1e\].rounded-3xl {
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
-            background: linear-gradient(145deg, #111116 0%, #0a0a0c 100%) !important;
-            padding: 3rem !important;
-            border-color: #222228 !important;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        /* Global Glassmorphism Utility for Navbar & Contact Form */
+        .glass {
+            background: rgba(10, 10, 14, 0.2) !important;
+            backdrop-filter: blur(24px) saturate(150%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(150%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.05) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
         }
 
-        /* Hide the massive video/image block to make it cleaner */
+        /* 1. ULTIMATE HOLOGRAPHIC PROJECT CARD */
+        div.bg-\[\#0c0c10\].border-\[\#2a2a32\].rounded-\[32px\] {
+            position: relative;
+            background: rgba(10, 10, 14, 0.4) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.05) !important;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(232, 178, 122, 0.03) !important;
+            overflow: visible !important; /* Allow 3D popouts */
+            transform-style: preserve-3d;
+            perspective: 1200px;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Removed Animated Cyber-Border */
+
+        /* 1. Flawless CSS Grid Layout (Side-by-side text and video) */
+        @media (min-width: 1024px) {
+            div.bg-\[\#0c0c10\].border-\[\#2a2a32\].rounded-\[32px\] {
+                display: grid !important;
+                grid-template-columns: 1fr 400px;
+                gap: 2rem;
+                max-width: 1200px !important; /* Increase width */
+                padding-bottom: 2rem;
+            }
+
+            /* Default all children to full width */
+            div.bg-\[\#0c0c10\].border-\[\#2a2a32\].rounded-\[32px\] > div {
+                grid-column: 1 / -1;
+                max-width: 100% !important;
+            }
+
+            /* Exceptions: Text and Video sit side-by-side on Row 2 */
+            div.bg-\[\#0c0c10\].border-\[\#2a2a32\].rounded-\[32px\] > div.pt-10 {
+                grid-column: 1 / 2 !important;
+                grid-row: 2;
+                padding-bottom: 2rem;
+            }
+
+            div.bg-\[\#0c0c10\].border-\[\#2a2a32\].rounded-\[32px\] > div:nth-child(3) {
+                grid-column: 2 / 3 !important;
+                grid-row: 2;
+                display: flex;
+                align-items: flex-start;
+                justify-content: center;
+                margin-top: 2.5rem !important;
+                padding-right: 2rem !important;
+            }
+        }
+
+        /* Make Header and Tech Stack fully transparent */
+        div.bg-\[\#0c0c10\].border-\[\#2a2a32\].rounded-\[32px\] div.bg-\[\#0a0a0c\] {
+            background: transparent !important;
+        }
+
+        /* Force main card to stay STATIC and transparent on hover */
+        div.bg-\[\#0c0c10\].border-\[\#2a2a32\].rounded-\[32px\]:hover {
+            background: rgba(10, 10, 14, 0.4) !important;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(232, 178, 122, 0.03) !important;
+            transform: none !important;
+        }
+
+        /* The Video/Image wrapper becomes a sleek, tilted 3D glass panel */
         .aspect-video {
-            display: none !important;
+            display: block !important;
+            position: relative !important;
+            width: 100% !important;
+            max-width: 400px !important; /* Small video card */
+            margin: 0 auto !important; 
+            height: auto !important;
+            aspect-ratio: 16/9;
+            border-radius: 20px !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: -20px 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(255, 255, 255, 0.05) !important;
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            z-index: 20;
+            background: #050505 !important;
+            transform: translateZ(40px) rotateY(-15deg) rotateX(10deg);
         }
 
-        div.bg-\[\#0d0d0f\].border-\[\#1a1a1e\].rounded-3xl:hover {
-            transform: translateY(-8px) scale(1.01) !important;
-            box-shadow: 0 20px 40px rgba(232, 178, 122, 0.12) !important;
-            border-color: rgba(232, 178, 122, 0.4) !important;
+        div.bg-\[\#0c0c10\].border-\[\#2a2a32\].rounded-\[32px\]:hover .aspect-video {
+            transform: translateZ(80px) rotateY(-25deg) rotateX(15deg) scale(1.05);
+            box-shadow: -30px 30px 70px rgba(0,0,0,0.8), 0 0 60px rgba(255, 255, 255, 0.1) !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
         }
 
-        /* 2. Improve typography & readability for project descriptions */
-        div.bg-\[\#0d0d0f\] p.text-\[\#a1a1aa\] {
+        /* Mobile overrides for video panel */
+        @media (max-width: 1023px) {
+            .aspect-video {
+                width: calc(100% - 40px) !important;
+            }
+        }
+
+        /* 2. Premium Typography for Title */
+        div.bg-\[\#0c0c10\] h3 {
+            background: linear-gradient(to right, #ffffff 20%, #e8b27a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: clamp(2rem, 4vw, 3rem) !important;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        /* Improve typography & readability for project descriptions */
+        div.bg-\[\#0c0c10\] p.text-\[\#d4d4d8\] {
             max-width: 65ch !important;
-            line-height: 1.7 !important;
-            font-size: 1.05rem !important;
+            line-height: 1.8 !important;
+            font-size: 1.1rem !important;
+            color: rgba(255, 255, 255, 0.7) !important;
         }
 
-        /* 3. Make the tech pills interactive */
+        /* 3. Tech Pills Glow Up */
         div.border-\[\#2a2a32\].rounded-full {
-            transition: all 0.3s ease !important;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            background: transparent !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            font-weight: 500;
             cursor: default;
         }
-
+        /* Remove hovering color changes entirely! */
         div.border-\[\#2a2a32\].rounded-full:hover {
-            border-color: #e8b27a !important;
-            color: #e8b27a !important;
-            background-color: rgba(232, 178, 122, 0.1) !important;
+            border-color: rgba(255, 255, 255, 0.15) !important; 
+            background: transparent !important;
+            color: #d4d4d8 !important; 
+            box-shadow: none !important;
+            transform: translateY(0); 
         }
 
-        /* 4. Fix cramped terminal header */
-        div.bg-\[\#0d0d0f\]>div.border-b {
+        /* Stunning Metrics & Highlight Cards */
+        div.bg-\[\#0a0a0c\].border-\[\#2a2a32\].rounded-2xl, 
+        div.group.rounded-2xl.bg-\[\#0e0e12\] {
+            transition: all 0.4s ease !important;
+            background: transparent !important;
+            border: 1px solid rgba(255, 255, 255, 0.04) !important;
+            box-shadow: none !important; 
+            backdrop-filter: blur(8px);
+        }
+        
+        div.bg-\[\#0a0a0c\].border-\[\#2a2a32\].rounded-2xl:hover,
+        div.group.rounded-2xl.bg-\[\#0e0e12\]:hover {
+            background: transparent !important; 
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            transform: translateY(0); 
+            box-shadow: none !important; 
+        }
+
+        /* Remove fuzzy text-shadows from numbers */
+        div.bg-\[\#0a0a0c\].border-\[\#2a2a32\].rounded-2xl:hover .text-\[\#e8b27a\],
+        div.group.rounded-2xl.bg-\[\#0e0e12\]:hover .text-\[\#e8b27a\] {
+            color: #e8b27a !important; 
+            text-shadow: none !important; 
+        }
+
+        /* Fix cramped terminal header */
+        div.bg-\[\#0c0c10\]>div.border-b {
             padding: 16px 24px !important;
         }
 
@@ -99,8 +222,8 @@
 
         #root.reveal {
             opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: blur(0px);
+            transform: none;
+            filter: none;
             pointer-events: auto;
         }
 
@@ -142,7 +265,96 @@
         [role="button"] {
             cursor: auto !important;
         }
-    </style>
+
+        /* 9. Unique Profile Image Frame Polish */
+        div[class*="aspect-[4/5]"] {
+            position: relative !important;
+            border: none !important;
+            border-radius: 2rem !important;
+            /* Overrides rounded-3xl */
+            max-width: 480px !important;
+            /* Increased size to make it more prominent */
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                0 30px 60px -10px rgba(0, 0, 0, 0.9),
+                0 0 80px -20px rgba(232, 178, 122, 0.15) !important;
+            transform: perspective(1200px) rotateY(-6deg) rotateX(2deg) scale(0.98);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            background: #0d0d0f !important;
+            overflow: visible !important;
+            z-index: 10;
+        }
+
+        /* Glowing aura background animation */
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        div[class*="aspect-[4/5]"]::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: calc(2rem + 4px);
+            background: linear-gradient(45deg,
+                    rgba(232, 178, 122, 0) 0%,
+                    rgba(232, 178, 122, 0) 30%,
+                    #e8b27a 60%,
+                    rgba(232, 178, 122, 0) 80%,
+                    rgba(232, 178, 122, 0) 100%);
+            background-size: 300% 300%;
+            animation: gradientMove 4s ease infinite;
+            z-index: -1;
+            opacity: 0.8;
+            transition: opacity 0.5s ease, filter 0.5s ease;
+            filter: blur(8px);
+        }
+
+        /* Hover effects */
+        div[class*="aspect-[4/5]"]:hover {
+            transform: perspective(1200px) rotateY(0deg) rotateX(0deg) scale(1.02) translateY(-10px);
+            box-shadow:
+                0 0 0 1px rgba(232, 178, 122, 0.3),
+                0 40px 80px -10px rgba(0, 0, 0, 0.95),
+                0 0 120px -20px rgba(232, 178, 122, 0.3) !important;
+        }
+
+        div[class*="aspect-[4/5]"]:hover::before {
+            opacity: 1;
+            filter: blur(12px);
+            animation-duration: 2s;
+            /* speed up on hover */
+        }
+
+        /* Image styling */
+        div[class*="aspect-[4/5]"] img {
+            border-radius: 1.5rem !important;
+            /* Slightly smaller than wrapper */
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            filter: grayscale(80%) contrast(1.1) brightness(0.9) !important;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            position: relative;
+            z-index: 1;
+        }
+
+        div[class*="aspect-[4/5]"]:hover img {
+            filter: grayscale(0%) contrast(1.05) brightness(1.1) !important;
+            transform: scale(1.08) !important;
+        }
+
+        </style>
+    <link rel="stylesheet" href="/skills-revamp.css" />
 </head>
 
 <body>
@@ -150,6 +362,7 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script defer src="/static/js/bundle.js"></script>
+    <script defer src="/skills-revamp.js"></script>
     <!-- Three.js Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="/three-bg.js"></script>
@@ -230,6 +443,109 @@
         integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg=="
         data-cf-beacon='{"version":"2024.11.0","token":"7f7b0fd8732c4326aae4b9d58d5c514a","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}'
         crossorigin="anonymous"></script>
+
+    <!-- Contact Form Email & Animation Injection -->
+    <style>
+        @keyframes epicPaperPlaneFly {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            20% {
+                transform: translate(-20px, 20px) scale(0.9) rotate(-15deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(400px, -400px) scale(0.3) rotate(30deg);
+                opacity: 0;
+            }
+        }
+        .epic-flying-plane {
+            position: absolute;
+            pointer-events: none;
+            z-index: 9999;
+            color: #e8b27a; /* Accent color */
+            animation: epicPaperPlaneFly 1.5s cubic-bezier(0.5, -0.5, 0.2, 1) forwards;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Wait for React to render the form
+            let formInterval = setInterval(() => {
+                const form = document.querySelector('#contact form');
+                if (form) {
+                    clearInterval(formInterval);
+                    
+                    form.addEventListener('submit', async (e) => {
+                        // Get inputs
+                        const inputs = form.querySelectorAll('input, textarea');
+                        if (inputs.length < 3) return;
+                        
+                        const name = inputs[0].value;
+                        const email = inputs[1].value;
+                        const message = inputs[2].value;
+                        
+                        if (!name || !email || !message) return; // React will handle the validation
+                        
+                        // Button Animation
+                        const btn = form.querySelector('button[type="submit"]');
+                        if (btn) {
+                            const originalHTML = btn.innerHTML;
+                            btn.innerHTML = 'Sending...';
+                            
+                            // Spawn Epic Paper Plane
+                            const rect = btn.getBoundingClientRect();
+                            const plane = document.createElement('div');
+                            plane.className = 'epic-flying-plane';
+                            plane.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>`;
+                            
+                            // Position exactly over the button
+                            plane.style.left = `${rect.left + window.scrollX + rect.width / 2 - 16}px`;
+                            plane.style.top = `${rect.top + window.scrollY + rect.height / 2 - 16}px`;
+                            document.body.appendChild(plane);
+
+                            setTimeout(() => {
+                                if (document.body.contains(plane)) plane.remove();
+                            }, 1600);
+
+                            // Send via FormSubmit AJAX
+                            fetch('https://formsubmit.co/ajax/azadaboobackar0@gmail.com', {
+                                method: "POST",
+                                headers: { 
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    name: name,
+                                    email: email,
+                                    message: message,
+                                    _subject: "New Portfolio Message from " + name
+                                })
+                            }).then(response => response.json())
+                              .then(data => {
+                                  btn.innerHTML = '✨ Message Sent!';
+                                  btn.style.backgroundColor = 'rgba(16, 185, 129, 0.15)'; 
+                                  btn.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+                                  btn.style.color = '#34d399';
+                                  
+                                  setTimeout(() => {
+                                      btn.innerHTML = originalHTML;
+                                      btn.style.backgroundColor = '';
+                                      btn.style.borderColor = '';
+                                      btn.style.color = '';
+                                  }, 4000);
+                              })
+                              .catch(error => {
+                                  console.log("Email error:", error);
+                                  btn.innerHTML = '❌ Error';
+                                  setTimeout(() => { btn.innerHTML = originalHTML; }, 3000);
+                              });
+                        }
+                    });
+                }
+            }, 1000);
+        });
+    </script>
 </body>
 
 </html>
