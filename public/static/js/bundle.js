@@ -46894,7 +46894,7 @@ import(${JSON.stringify(manifest.entry.module)});`;
         github: "https://github.com/Azad-Aboobackar",
         linkedin: "https://www.linkedin.com/in/azad-aboobackar-589636323/",
         resumeUrl: "https://customer-assets.emergentagent.com/job_66063fbb-37cd-4b74-8492-fd13fd226878/artifacts/93yr9ywj_Azad_Aboobackar_Resume.pdf",
-        photoUrl: "https://customer-assets.emergentagent.com/job_66063fbb-37cd-4b74-8492-fd13fd226878/artifacts/cwsu1n8f_ChatGPT%20Image%20Apr%2027%2C%202026%2C%2009_40_00%20AM.png",
+        photoUrl: "/profile.jpg",
         available: true,
         yearsCoding: 2,
         bio: "Full Stack Developer with hands-on experience shipping production-grade web applications. I work across Python, Django, React and PostgreSQL — from API architecture to pixel-precise interfaces. I obsess over clean code, intuitive UX and the small details that separate good products from unforgettable ones.",
